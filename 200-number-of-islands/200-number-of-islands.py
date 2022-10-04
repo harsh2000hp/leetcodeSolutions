@@ -2,35 +2,25 @@ class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
         if not grid:
             return 0
+        rows, cols = len(grid), len(grid[0])
+        visit = set()
+        islands = 0
         
-        m = len(grid)
-        n = len(grid[0])
-        sum = 0
-        
-        for i in range(m):
-            for j in range(n):
-                if grid[i][j] == "0":
-                    continue
-                else:
-                    
-                    sum +=1
-                    stack = list()
-                    stack.append([i,j])
-                    while len(stack) != 0:
-                        [p,q] = stack.pop()
-                        if p>= 1 and grid[p-1][q] == "1":
-                            stack.append([p-1,q])
-                            
-                        if p< m-1 and grid[p+1][q] == "1":
-                            stack.append([p+1,q])
-                            
-                        if q>=1 and grid[p][q-1] == "1":
-                            stack.append([p,q-1])
-                            
-                        if q<n-1 and grid[p][q+1] == "1":
-                            stack.append([p,q+1])
-                            
-                        grid[p][q] = "0"
-                        
-        return sum
-                            
+        def bfs(r,c):
+            q = collections.deque()
+            visit.add((r,c))
+            q.append((r,c))
+            while q:
+                row, col = q.pop()
+                directions = [[1,0],[-1,0],[0,1],[0,-1]]
+                for dr, dc in directions:
+                    r, c = row +dr, col + dc
+                    if (r in range(rows) and c in range(cols) and grid[r][c] == "1" and (r,c) not in visit):
+                        q.append((r,c))
+                        visit.add((r,c))
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1" and (r,c) not in visit:
+                    bfs(r,c)
+                    islands += 1
+        return islands
