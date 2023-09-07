@@ -4,4 +4,4 @@ class Solution:
         for num in nums[1:]:
             currentSubArray = max(num, currentSubArray + num)
             maxSubArray = max(maxSubArray, currentSubArray)
-        return maxSubArray 
+        return maxSubArray
